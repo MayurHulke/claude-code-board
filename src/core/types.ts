@@ -139,6 +139,8 @@ export interface BoardConfig {
   terminalArgs: string[]
   /** Desktop notification when a session starts waiting or becomes blocked. */
   notify: boolean
+  /** Desktop notification when a busy session finishes its turn. */
+  notifyDone: boolean
 }
 
 export const DEFAULT_CONFIG: BoardConfig = {
@@ -148,6 +150,7 @@ export const DEFAULT_CONFIG: BoardConfig = {
   terminalExec: 'x-terminal-emulator',
   terminalArgs: ['-e', 'bash', '-lc', '{cmd}'],
   notify: true,
+  notifyDone: true,
 }
 
 /** Statuses that mean a human needs to do something. */
