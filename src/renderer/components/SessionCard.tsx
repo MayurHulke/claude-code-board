@@ -33,6 +33,16 @@ export function canFocusTty(s: BoardSession): boolean {
   return s.where.type === 'tty' && api.platform === 'darwin'
 }
 
+/**
+ * Filled rather than outlined from 80%, so it cannot be mistaken for the
+ * outlined amber "restart to update" chip that usually sits beside it.
+ */
+function contextStyle(percent: number): string {
+  if (percent >= 90) return 'border-artery bg-artery/40 text-bone'
+  if (percent >= 80) return 'border-bile bg-bile/35 text-bone'
+  return 'border-suture bg-slab text-ash'
+}
+
 function Chip({ children, title }: { children: React.ReactNode; title?: string }) {
   return (
     <span
@@ -197,11 +207,9 @@ function SessionCard({
               `${formatTokens(s.contextTokens ?? 0)} tokens in context as of the last reply. ` +
               'Past ~80%, /compact or a fresh session keeps it sharp.'
             }
-            className={`rounded border px-1.5 py-0.5 font-mono text-[10px] ${
-              s.contextPercent >= 80
-                ? 'border-bile/50 bg-bile/10 text-bile'
-                : 'border-suture bg-slab text-ash'
-            }`}
+            className={`rounded border px-1.5 py-0.5 font-mono text-[10px] ${contextStyle(
+              s.contextPercent,
+            )}`}
           >
             ctx {s.contextPercent}%
           </span>
