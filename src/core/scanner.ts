@@ -14,6 +14,7 @@ import {
   isClaudeProcess,
   isForeground,
   isSuspended,
+  terminalOf,
   type ProcInfo,
 } from './ps.ts'
 import { resolveActivity } from './activity.ts'
@@ -56,9 +57,7 @@ function deriveStatus(entry: AgentEntry, live: boolean, attached: RegistryEntry 
 }
 
 function ttyOf(proc: ProcInfo | undefined): string | null {
-  if (!proc || !isClaudeProcess(proc)) return null
-  const { tty } = proc
-  return tty && tty !== '??' && tty !== '-' ? tty : null
+  return isClaudeProcess(proc) ? terminalOf(proc) : null
 }
 
 /**
